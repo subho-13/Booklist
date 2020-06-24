@@ -43,8 +43,8 @@ func (g *GoodreadsResponse) Retrieve(xmlData []byte) {
 	xml.Unmarshal(xmlData, g)
 }
 
-func filterOut(avg float64, rCount uint32) bool {
-	if avg < 4 || rCount < 10000 {
+func filterOut(avg float64, rCount, tRev uint32) bool {
+	if avg < 4 || rCount < 50000 || tRev < 2000 {
 		return true
 	}
 
@@ -59,7 +59,7 @@ func (g *GoodreadsResponse) calcScore() float64 {
 
 	var avg = float64(rSum) / float64(rCount)
 
-	if filterOut(avg, rCount) {
+	if filterOut(avg, rCount, tRev) {
 		return 0
 	}
 
@@ -99,9 +99,9 @@ func (g *GoodreadsResponse) NextIds() []string {
 	idList := make([]string, 0, 15)
 
 	for _, id := range g.Book.Similar {
-		if bloomfilter.isPresent(id) == false {
+		if bloomfilter.IsPresent(id) == false {
 			idList = append(idList, id)
-			bloomfilter.add(id)
+			bloomfilter.Add(id)
 		}
 	}
 

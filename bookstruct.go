@@ -218,14 +218,16 @@ func (list *List) Write(filename string) {
 	for i != -1 {
 		book := list.cell[i].book
 		s = ""
-		s += "\n\n" + fmt.Sprintf("%d", count) + ". Title = " + book.Title
-		s += "\nAuthor = [ "
+		s += "\n\n" + fmt.Sprintf("%d", count) + ". " + book.Title
+		s += "\n - "
 		for _, author := range book.Authors {
 			s += "\"" + author + "\"" + " "
 		}
 
-		s += "]\nScore = " + fmt.Sprintf("%f", book.Score)
-		s += "\nDescription :: \n" + book.Description
+		/*
+			s += "]\nScore = " + fmt.Sprintf("%f", book.Score)
+			s += "\nDescription :: \n" + book.Description
+		*/
 
 		/*
 			s += "\nTags = [ "
@@ -235,7 +237,10 @@ func (list *List) Write(filename string) {
 			}
 		*/
 
-		s += "\n\nCost = " + fmt.Sprintf("%f", list.cell[i].cost)
+		/*
+
+			s += "\n\nCost = " + fmt.Sprintf("%f", list.cell[i].cost)
+		*/
 
 		i = list.cell[i].next
 		count = count + 1

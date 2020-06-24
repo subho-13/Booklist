@@ -11,7 +11,6 @@ import (
 
 const queueFile string = "/home/subho/queueIds.txt"
 const bookFile string = "/home/subho/Ultimate_Reading_List.txt"
-const defID string = "40097951"
 
 func fetchBooks(queue *Queue, bookChan chan<- *Book, sigChan <-chan os.Signal) {
 	reqString1 := "https://www.goodreads.com/book/show/"
@@ -74,8 +73,12 @@ func main() {
 	bookChan := make(chan *Book)
 	queue := new(Queue)
 
+	var id string
+	fmt.Print("Enter your Id here :: ")
+	fmt.Scanln(&id)
+
 	queue.Init()
-	queue.Read(queueFile, defID)
+	queue.Push(id)
 
 	go fetchBooks(queue, bookChan, sigChan)
 
@@ -88,7 +91,6 @@ func main() {
 	<-done
 
 	fmt.Println("\n\n -- Recieved Signal. Writing Files. -- ")
-	queue.Write(queueFile)
 	bookList.Write(bookFile)
 	bookList.Print()
 }
